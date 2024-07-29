@@ -10,6 +10,7 @@ function Register() {
     const[values,setValues]=useState({
         username:"",
         password:"",
+        email:"",
         confirmPassword:"",
 
     })
@@ -20,25 +21,43 @@ function Register() {
         pauseOnHover:true,
         theme:"dark",
     }
+   
+
+    const handleChange = (event) => {
+        setValues({
+            ...values,[event.target.name]:event.target.value
+        });
+    };
     const handleSubmit = (event) => {
         event.preventDefault();
        handleValidation();
     };
 
-    const handleChange = (event) => {
-        setValues({
-            ...setValues,[event.target.name]:event.target.value
-        });
+    const handleValidation = () => {
+        const { password, confirmPassword, username, email } = values;
+        if(password !== confirmPassword) {
+            toast.error(
+            "Password and confirm password are different!",
+            toastOptions
+        );
+        return false;
+        } else if (username.length< 3) {
+            toast.error("Username too short!",
+             toastOptions
+        );
+            return false;
+        } else if (password.length< 8) {
+            toast.error("Password too short (8 or more characters)", 
+            toastOptions);
+            return false;
+        } else if (email === "") {
+            toast.error("email required!",
+            toastOptions
+        );
+            return false;
+        }
+        return true;
     };
-
-    const handleValidation=()=>{
-            const{password,confirmPassword,username,email}=values;
-            if(password!==confirmPassword){
-                toast.error("password and confirm password are different !",toastOptions);
-
-            }
-    };
-
     return (
         <>
             <FromContainer>
